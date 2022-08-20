@@ -155,7 +155,7 @@ typedef struct CPUArchState {
     struct {} end_reset_fields;
 
     /* Fields from here on are preserved across CPU reset. */
-    uint32_t features;
+    uint64_t features;
 
     /* A-Line trap lookup */
     GHashTable *alinetraps;
@@ -542,9 +542,9 @@ enum m68k_features {
     M68K_FEATURE_TRAPCC,
 };
 
-static inline int m68k_feature(CPUM68KState *env, int feature)
+static inline uint64_t m68k_feature(CPUM68KState *env, int feature)
 {
-    return (env->features & (1u << feature)) != 0;
+    return (env->features & (1ULL << feature)) != 0;
 }
 
 void m68k_cpu_list(void);
