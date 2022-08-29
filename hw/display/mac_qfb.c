@@ -642,7 +642,7 @@ static void qfb_patch_vpblock(QfbState *ms, uint8_t *ptr, uint32_t offset, uint3
 
 static void qfb_patch_sresource(QfbState *ms, uint8_t *ptr, uint32_t offset, uint32_t size)
 {
-    uint32_t depth;
+    uint32_t depth = 0;
 
     if (offset % 2 != 0 || offset + 8 > size)
     {
