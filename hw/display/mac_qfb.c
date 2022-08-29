@@ -692,16 +692,6 @@ static void qfb_try_patch_decl_rom(MemoryRegion *rom, QfbState *ms)
         || ptr[size-7] != 1 || ptr[size-2] != 0 || ptr[size-1] != 0x0F)
     {
         fprintf(stderr, "warning: mac_qfb.rom has an invalid format header block\n");
-        fprintf(stderr, "qfb_ptr_read_u32(ptr + size - 6) != 0x5A932BC7 = %i\n", (int)(qfb_ptr_read_u32(ptr + size - 6) != 0x5A932BC7));
-        fprintf(stderr, "qfb_ptr_read_u32(ptr + size - 6) = 0x%08X\n", qfb_ptr_read_u32(ptr + size - 6));
-        fprintf(stderr, "ptr[size-8] != 1 = %i\n", (int)(ptr[size-8] != 1));
-        fprintf(stderr, "ptr[size-7] != 1 = %i\n", (int)(ptr[size-7] != 1));
-        fprintf(stderr, "ptr[size-2] != 0 = %i\n", (int)(ptr[size-2] != 0));
-        fprintf(stderr, "ptr[size-1] != 0x0F = %i\n", (int)(ptr[size-1] != 0x0F));
-        fprintf(stderr, "%p\n", ptr);
-        FILE* f = popen("hexdump -C", "w");
-        fwrite(ptr, size, 1, f);
-        fclose(f);
         return;
     }
 
