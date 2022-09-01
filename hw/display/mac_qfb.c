@@ -584,15 +584,6 @@ static uint32_t qfb_calc_nubus_checksum(uint8_t* p, Int128 size)
     return ret;
 }
 
-static inline uint32_t qfb_ptr_read_u32(uint8_t *p)
-{
-#if !HOST_BIG_ENDIAN
-    return bswap32(*(uint32_t*)p);
-#else
-    return *(uint32_t*)p;
-#endif
-}
-
 static inline uint16_t qfb_ptr_read_u16(uint8_t *p)
 {
 #if !HOST_BIG_ENDIAN
@@ -602,12 +593,9 @@ static inline uint16_t qfb_ptr_read_u16(uint8_t *p)
 #endif
 }
 
-static inline void qfb_ptr_write_u32(uint8_t *p, uint32_t val)
+static inline uint32_t qfb_ptr_read_u32(uint8_t *p)
 {
-#if !HOST_BIG_ENDIAN
-    val = bswap32(val);
-#endif
-    *(uint32_t*)p = val;
+    return ((uint32_t)qfb_ptr_read_u16(p) << 16) | qfb_ptr_read_u16(p+2);
 }
 
 static inline void qfb_ptr_write_u16(uint8_t *p, uint16_t val)
@@ -616,6 +604,12 @@ static inline void qfb_ptr_write_u16(uint8_t *p, uint16_t val)
     val = bswap16(val);
 #endif
     *(uint16_t*)p = val;
+}
+
+static inline void qfb_ptr_write_u32(uint8_t *p, uint32_t val)
+{
+    qfb_ptr_write_u16(p, val >> 16);
+    qfb_ptr_write_u16(p+2, val & 0xFFFF);
 }
 
 static void qfb_patch_vpblock(QfbState *ms, uint8_t *ptr, uint32_t offset, uint32_t size, uint32_t* out_depth)
